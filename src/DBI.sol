@@ -3,8 +3,10 @@ pragma solidity 0.8.19;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {DBIPost} from "./DBIPost.sol";
 
 error IndexOutOfBound();
+error UninitializedOrgs();
 
 contract DBI is Ownable {
 
@@ -18,7 +20,10 @@ contract DBI is Ownable {
 
     Organisation[] _organisations;
 
+    mapping(uint256 => address[]) internal _posts; // orgsID => proof of post
+
     event OrganisationCreated(Organisation orgs); 
+    event PostCreated(uint256 timestamp, address creator, address post, string postDetails); 
 
     constructor() {}
 
@@ -38,5 +43,35 @@ contract DBI is Ownable {
         }
         return _organisations[index];
     }
-    
+
+    function createPost(
+        uint256 orgsId,
+        address[] memory stolenToken, 
+        uint256[] memory stolenTokenAmount, 
+        uint256 deadline, 
+        uint256 bountyRewardInBps,
+        string memory postDetails
+    ) external returns (address post) {    
+        Organisation memory orgs = _organisations[orgsId];
+
+        if (orgs.token == address(0)) {
+            revert UninitializedOrgs();            
+        }
+        
+        DBIPost _post = new DBIPost(
+            orgsId, 
+            orgs.name, 
+            stolenToken, 
+            stolenTokenAmount, 
+            deadline, 
+            orgs.treasury,
+            bountyRewardInBps,
+            postDetails
+        );
+
+        _posts[orgsId].push(address(_post));
+        post = address(_post);
+
+        emit PostCreated(block.timestamp, msg.sender, address(_post), postDetails); 
+    }     
 }   
