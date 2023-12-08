@@ -1,0 +1,26 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc = '0.8.19'
+
+[rpc_endpoints]
+ethereumSepolia = "${ETHEREUM_SEPOLIA_RPC_URL}"
+optimismGoerli = "${OPTIMISM_GOERLI_RPC_URL}"
+avalancheFuji = "${AVALANCHE_FUJI_RPC_URL}"
+arbitrumGoerli = "${ARBITRUM_GOERLI_RPC_URL}"
+polygonMumbai = "${POLYGON_MUMBAI_RPC_URL}"
+bscTestnet = "${BSC_TESTNET_RPC_URL}"
+baseGoerli = "${BASE_GOERLI_RPC_URL}"
+scrollTestnet = "${SCROLL_TESTNET_RPC_URL}"
+mantleTestnet = "${MANTLE_TESTNET_RPC_URL}"
+
+[etherscan]
+ethereumSepolia = { key = "${ETHERSCAN_API_KEY}" }
+optimismGoerli = { key = "${OPTIMISM_SCAN_API_KEY}" }
+avalancheFuji = { key = "${AVALANCHE_SCAN_API_KEY}" }
+arbitrumGoerli = { key = "${ARBITRUM_SCAN_API_KEY}" }
+polygonMumbai = { key = "${POLYGON_SCAN_RPC_URL}" }
+bscTestnet = { key = "${BSC_SCAN_API_KEY}" }
+baseGoerli = { key = "${BASE_SCAN_API_KEY}" }
+scrollTestnet = { key = "${SCROLL_SCAN_API_KEY}" }
