@@ -2,6 +2,7 @@
 pragma solidity 0.8.19;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {FullMath} from "./utils/FullMath.sol";
 
 contract DBIPost {
 
@@ -38,7 +39,11 @@ contract DBIPost {
 
     function fulfill() external {
         for (uint8 i = 0; i < stolenToken.length; i++) {
-            uint256 bountyAmount = bountyRewardInBps * stolenTokenAmount[i] / 100; 
+            uint256 bountyAmount = FullMath.mulDiv(
+                bountyRewardInBps, 
+                stolenTokenAmount[i], 
+                10000
+            );
             uint256 refundedAmount = stolenTokenAmount[i] - bountyAmount;
             IERC20(stolenToken[i]).transferFrom(msg.sender, treasury, refundedAmount);
         }
