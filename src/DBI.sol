@@ -7,6 +7,7 @@ import {DBIPost} from "./DBIPost.sol";
 
 error IndexOutOfBound();
 error UninitializedOrgs();
+error NotEnoughTokenAmount();
 
 contract DBI is Ownable {
 
@@ -56,6 +57,12 @@ contract DBI is Ownable {
 
         if (orgs.token == address(0)) {
             revert UninitializedOrgs();            
+        }
+
+        // only holder
+        uint256 initiatorBalance = IERC20(orgs.token).balanceOf(msg.sender);
+        if (initiatorBalance < orgs.thresholdTokenAmount) {
+            revert NotEnoughTokenAmount();            
         }
         
         DBIPost _post = new DBIPost(
