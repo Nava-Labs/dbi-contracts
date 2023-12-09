@@ -6,12 +6,12 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {DBIPost} from "./DBIPost.sol";
 
 error IndexOutOfBound();
-error UninitializedOrgs();
+error UninitializedOrgz();
 error NotEnoughTokenAmount();
 
 contract DBI is Ownable {
 
-    struct Organisation {
+    struct Organization {
         string name;
         address token;
         address treasury;
@@ -19,64 +19,64 @@ contract DBI is Ownable {
         string twitterName;
     }
 
-    Organisation[] _organisations;
+    Organization[] _organizations;
 
     mapping(uint256 => address[]) internal _posts; // orgsID => proof of post
 
-    event OrganisationCreated(Organisation orgs); 
+    event OrganizationCreated(Organization orgs); 
     event PostCreated(uint256 timestamp, address creator, address post, string postDetails); 
 
     constructor() {}
 
-    function addOrganisation(Organisation memory orgs) external {
-        _organisations.push(orgs);
+    function addOrganization(Organization memory orgs) external {
+        _organizations.push(orgs);
 
-        emit OrganisationCreated(orgs);
+        emit OrganizationCreated(orgs);
     }
 
-    function getAllOrgs() external view returns (Organisation[] memory orgs) {
-        return _organisations;
+    function getAllOrgs() external view returns (Organization[] memory orgs) {
+        return _organizations;
     }
 
-    function getOrgsDetailsById(uint256 index) external view returns (Organisation memory orgs) {
-        if(index > _organisations.length) {
+    function getOrgzDetailsById(uint256 index) external view returns (Organization memory orgz) {
+        if(index > _organizations.length) {
             revert IndexOutOfBound();            
         }
-        return _organisations[index];
+        return _organizations[index];
     }
 
     function createPost(
-        uint256 orgsId,
+        uint256 orgzId,
         address[] memory stolenToken, 
         uint256[] memory stolenTokenAmount, 
         uint256 deadline, 
         uint256 bountyRewardInBps,
         string memory postDetails
     ) external returns (address post) {    
-        Organisation memory orgs = _organisations[orgsId];
+        Organization memory orgz = _organizations[orgzId];
 
-        if (orgs.token == address(0)) {
-            revert UninitializedOrgs();            
+        if (orgz.token == address(0)) {
+            revert UninitializedOrgz();            
         }
 
         // only holder
-        uint256 initiatorBalance = IERC20(orgs.token).balanceOf(msg.sender);
-        if (initiatorBalance < orgs.thresholdTokenAmount) {
+        uint256 initiatorBalance = IERC20(orgz.token).balanceOf(msg.sender);
+        if (initiatorBalance < orgz.thresholdTokenAmount) {
             revert NotEnoughTokenAmount();            
         }
         
         DBIPost _post = new DBIPost(
-            orgsId, 
-            orgs.name, 
+            orgzId, 
+            orgz.name, 
             stolenToken, 
             stolenTokenAmount, 
             deadline, 
-            orgs.treasury,
+            orgz.treasury,
             bountyRewardInBps,
             postDetails
         );
 
-        _posts[orgsId].push(address(_post));
+        _posts[orgzId].push(address(_post));
         post = address(_post);
 
         emit PostCreated(block.timestamp, msg.sender, address(_post), postDetails); 
