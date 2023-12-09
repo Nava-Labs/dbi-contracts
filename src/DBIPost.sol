@@ -77,5 +77,14 @@ contract DBIPost is SignatureVerification {
 
         emit ReportUploaded(block.timestamp, msg.sender, reportCID);
     }    
+
+    function getAllReports() external view returns (UserInReport[] memory) {
+        uint256 _totalReport = totalReport;        
+        UserInReport[] memory reports = new UserInReport[](_totalReport);
+        for (uint i = 0; i < _totalReport; i++) {
+            reports[i] = userInReports[i];
+        }
+        return reports;
+    }
         
 }   
