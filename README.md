@@ -1,66 +1,28 @@
-## Foundry
+# DBI Contracts Repository
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Introduction
+This repository contains a collection of smart contracts designed for the DBI ecosystem. 
+The contracts are built to handle organization registration, handling post-hack interaction such as the distribution of bounties and the process of refunds, NFT issuance for roles.
 
-Foundry consists of:
+## Contracts
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### DBI.sol
+`DBI.sol` is the main contract in this repository. It includes key features such as:
 
-## Documentation
+- `addOrganization`: A function for registering organizations within the DBI platform.
+- `createPost`: Handles the creation and management of posts on the blockchain.
 
-https://book.getfoundry.sh/
+### DBIPost.sol
+`DBIPost.sol` focuses on handling posts on the blockchain and acts as a proof of post. Its key features include:
 
-## Usage
+- `uploadReport`: Allows users to submit reports.
+- `fulfill`: Enables hackers to return hacked funds and receive their bounty rewards. This function uses `FullMath` for precise calculation of reward distribution.
 
-### Build
+### DBIPoap.sol
+`DBIPoap.sol` is NFTs as Proof of Attendance Protocols (POAPs) to users, signifying their roles within the DBI ecosystem.
 
-```shell
-$ forge build
-```
+### SignatureVerification.sol
+This contract is used for handling authority checks and permissions for operations within the DBI contracts.
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+### FullMath.sol
+`FullMath.sol` is a utility contract used primarily in the `fulfill` function of `DBIPost.sol`. It ensures precise calculations for the distribution of bounty rewards.
