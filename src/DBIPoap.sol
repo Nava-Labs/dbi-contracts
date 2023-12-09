@@ -8,7 +8,7 @@ import {SignatureVerification} from "./utils/SignatureVerification.sol";
 
 error Minted();
 
-contract DBIPOAP is Ownable, ERC721A, SignatureVerification {
+contract DBIPoap is Ownable, ERC721A, SignatureVerification {
     using Strings for uint256;
 
     string public baseURI;
