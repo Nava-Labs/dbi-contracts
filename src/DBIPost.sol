@@ -4,6 +4,8 @@ pragma solidity 0.8.19;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {FullMath} from "./utils/FullMath.sol";
 
+error Expired();
+
 contract DBIPost {
 
     uint256 public immutable ORGS_ID;
@@ -38,6 +40,10 @@ contract DBIPost {
     }
 
     function fulfill() external {
+        if (block.timestamp > deadline) {
+            revert Expired();
+        }
+
         for (uint8 i = 0; i < stolenToken.length; i++) {
             uint256 bountyAmount = FullMath.mulDiv(
                 bountyRewardInBps, 
