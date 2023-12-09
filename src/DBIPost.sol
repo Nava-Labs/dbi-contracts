@@ -9,8 +9,8 @@ error Expired();
 
 contract DBIPost is SignatureVerification {
 
-    uint256 public immutable ORGS_ID;
-    string public ORGS;
+    uint256 public immutable ORGZ_ID;
+    string public ORGZ;
     address[] public stolenToken;
     uint256[] public stolenTokenAmount;
     uint256 public deadline;
@@ -29,7 +29,7 @@ contract DBIPost is SignatureVerification {
     event ReportUploaded(uint256 timestamp, address reported, string reportCID); 
 
     constructor(    
-        uint256 orgsId,
+        uint256 orgzId,
         string memory name,
         address[] memory _stolenToken, 
         uint256[] memory _stolenTokenAmount, 
@@ -38,8 +38,8 @@ contract DBIPost is SignatureVerification {
         uint256 _bountyRewardInBps,
         string memory _postDetails
     ) SignatureVerification("DBI", "1.0.0") {
-        ORGS_ID = orgsId;
-        ORGS = name;
+        ORGZ_ID = orgzId;
+        ORGZ = name;
         stolenToken = _stolenToken;
         stolenTokenAmount = _stolenTokenAmount;
         deadline = _deadline;
